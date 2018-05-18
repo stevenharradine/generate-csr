@@ -14,7 +14,7 @@ if [ -f $CONFIG_PATH ]; then
 	source $CONFIG_PATH
 else
 	# does not exist
-	read -r -p "Configuration file not found at /etc/generate-csr/config. Create? [y/N] " response
+	read -r -p "Configuration file not found at $CONFIG_PATH. Create? [y/N] " response
 	if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
 		echo -n "Making folder ."
 		sudo mkdir /etc/generate-csr 2> /dev/null
