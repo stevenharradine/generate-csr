@@ -86,9 +86,9 @@ else
 	echo ""
 	echo ""
 	echo "CSR for $domain"
-	cat $csrPath
+	cat "$csrPath"
 	echo ""
 	echo "Passphrase for zip: $password"
 
-	cd $cwd
+	cd "$cwd"
 fi
