@@ -1,10 +1,5 @@
 #!/bin/bash
 cwd=$PWD
-keyPath=$domain.key
-keyorgPath=$keyPath.org
-csrPath=$domain.csr
-zipPath=$domain.zip
-logPath=$domain.log
 
 CONFIG_PATH=/etc/generate-csr/config
 
@@ -18,6 +13,12 @@ for arg in "$@"; do
 		domain=$value
 	fi
 done
+
+keyPath=$domain.key
+keyorgPath=$keyPath.org
+csrPath=$domain.csr
+zipPath=$domain.zip
+logPath=$domain.log
 
 if [ -f $CONFIG_PATH ]; then
 	# exists
