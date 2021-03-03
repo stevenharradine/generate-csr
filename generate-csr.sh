@@ -1,6 +1,7 @@
 #!/bin/bash
 cwd=$PWD
 
+domain="null"
 CONFIG_PATH=/etc/generate-csr/config
 
 for arg in "$@"; do
@@ -13,6 +14,11 @@ for arg in "$@"; do
 		domain=$value
 	fi
 done
+
+if [ "$domain" = "null" ]; then
+	echo "Domain must be defined"
+	exit 1
+fi
 
 keyPath=$domain.key
 keyorgPath=$keyPath.org

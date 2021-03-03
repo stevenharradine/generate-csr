@@ -10,11 +10,12 @@ Tool to generate a Certificate Signing Request (CSR).
 ## Usage
 Generate a CSR
 ```
-./generate-csr {{ domain }}
+./generate-csr --domain=example.com
 ```
 
-### Where,
- * `domain` is the FQDN to generate the CSR for
+### Arguments,
+ * `--domain` (Required) is the FQDN to generate the CSR for
+ * `--config_path` (Optional) the path to the configuration file (default: /etc/generate-csr/config)
 
 ## Example
 1. Install
@@ -23,7 +24,7 @@ sudo ./install.sh
 ```
 2. First Run (setting certificate fields)
 ```
-$ generate-csr example.com
+$ generate-csr --domain=example.com
 Configuration file not found at /etc/generate-csr/config. Create? [y/N] Y
 Making folder . Done
 Enter ISO 3166 2 digit country code [ENTER]: US
@@ -61,7 +62,7 @@ Passphrase for zip: aG3UrtpZmOV0LIPS67DZ8A==
 ```
 3. Subsequent runs will already have your ORG data saved
 ```
-$ generate-csr example.com
+$ generate-csr --domain=example.com
 Generating private key for example.com Done
 Removing passphrase from private key Done
 Generate certificate signing request (CSR) Done
