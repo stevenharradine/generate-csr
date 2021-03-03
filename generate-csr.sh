@@ -1,6 +1,4 @@
 #!/bin/bash
-domain=$1
-
 cwd=$PWD
 keyPath=$domain.key
 keyorgPath=$keyPath.org
@@ -9,6 +7,18 @@ zipPath=$domain.zip
 logPath=$domain.log
 
 CONFIG_PATH=/etc/generate-csr/config
+
+for arg in "$@"; do
+	key=`echo "$arg" | awk -F "=" '{print $1}'`
+	value=`echo "$arg" | awk -F "=" '{print $2}'`
+
+	if [[ $key == "--config_path" ]]; then
+		CONFIG_PATH=$value
+	elif [[ $key == "--domain" ]]; then
+		domain=$value
+	fi
+done
+
 if [ -f $CONFIG_PATH ]; then
 	# exists
 	source $CONFIG_PATH
