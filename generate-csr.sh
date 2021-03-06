@@ -3,12 +3,7 @@ cwd=$PWD
 
 CONFIG_PATH=/etc/generate-csr/config
 domain="null"
-
-keyPath=$domain.key
-keyorgPath=$keyPath.org
-csrPath=$domain.csr
-zipPath=$domain.zip
-logPath=$domain.log
+certs_location="certs/"
 
 for arg in "$@"; do
 	key=`echo "$arg" | awk -F "=" '{print $1}'`
@@ -18,6 +13,8 @@ for arg in "$@"; do
 		CONFIG_PATH=$value
 	elif [[ $key == "--domain" ]]; then
 		domain=$value
+	elif [[ $key == "--certs_location" ]]; then
+		certs_location=$value
 	fi
 done
 
@@ -72,14 +69,21 @@ else
 	fi
 fi
 
-if [ -d "$domain" ]; then
+# Main program starts here
+keyPath=$domain.key
+keyorgPath=$keyPath.org
+csrPath=$domain.csr
+zipPath=$domain.zip
+logPath=$domain.log
+
+if [ -d "$certs_location$domain" ]; then
 	echo "Certificate already exists,"
 	echo "Please delete the folder and try again"
 	exit 1
 fi
 
-mkdir "$domain"
-cd "$domain"
+mkdir -p "$certs_location$domain"
+cd "$certs_location$domain"
 
 password=`openssl rand -base64 16`
 echo $password > $domain.password

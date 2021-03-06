@@ -16,6 +16,7 @@ Generate a CSR
 ### Arguments,
  * `--domain` (Required) is the FQDN to generate the CSR for
  * `--config_path` (Optional) the path to the configuration file (default: /etc/generate-csr/config)
+ * `--certs_location` (Optional) Default: `certs/` the location where you want the certificates to be generated
 
 ## Example
 1. Install
