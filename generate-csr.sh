@@ -75,37 +75,38 @@ fi
 if [ -d "$domain" ]; then
 	echo "Certificate already exists,"
 	echo "Please delete the folder and try again"
-else
-	mkdir "$domain"
-	cd "$domain"
-
-	password=`openssl rand -base64 16`
-	echo $password > $domain.password
-
-	echo -n "Generating private key for $domain"
-	openssl genrsa -aes256 -out $keyPath -passout pass:$password 2048 >> $logPath 2>&1
-	echo " Done"
-
-	echo -n "Removing passphrase from private key"
-	cp $keyPath $keyorgPath > /dev/null
-	openssl rsa -in $keyorgPath -out $keyPath -passin pass:$password >> $logPath 2>&1
-	echo " Done"
-
-	echo -n "Generate certificate signing request (CSR)"
-	subject="/C=$country/ST=$state/L=$locality/O=$organisation/OU=$organisationalUnit/CN=$domain"
-	openssl req -new -key $keyPath -out $csrPath -subj "$subject" >> $logPath 2>&1
-	echo " Done"
-
-	echo -n "Generating encrypted zip"
-	7za a -tzip -p"$password" -mem=AES256 $zipPath $keyPath >> $logPath 2>&1
-	echo " Done"
-
-	echo ""
-	echo ""
-	echo "CSR for $domain"
-	cat "$csrPath"
-	echo ""
-	echo "Passphrase for zip: $password"
-
-	cd "$cwd"
+	exit 1
 fi
+
+mkdir "$domain"
+cd "$domain"
+
+password=`openssl rand -base64 16`
+echo $password > $domain.password
+
+echo -n "Generating private key for $domain"
+openssl genrsa -aes256 -out $keyPath -passout pass:$password 2048 >> $logPath 2>&1
+echo " Done"
+
+echo -n "Removing passphrase from private key"
+cp $keyPath $keyorgPath > /dev/null
+openssl rsa -in $keyorgPath -out $keyPath -passin pass:$password >> $logPath 2>&1
+echo " Done"
+
+echo -n "Generate certificate signing request (CSR)"
+subject="/C=$country/ST=$state/L=$locality/O=$organisation/OU=$organisationalUnit/CN=$domain"
+openssl req -new -key $keyPath -out $csrPath -subj "$subject" >> $logPath 2>&1
+echo " Done"
+
+echo -n "Generating encrypted zip"
+7za a -tzip -p"$password" -mem=AES256 $zipPath $keyPath >> $logPath 2>&1
+echo " Done"
+
+echo ""
+echo ""
+echo "CSR for $domain"
+cat "$csrPath"
+echo ""
+echo "Passphrase for zip: $password"
+
+cd "$cwd"
