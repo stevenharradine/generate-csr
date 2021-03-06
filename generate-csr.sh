@@ -1,8 +1,14 @@
 #!/bin/bash
 cwd=$PWD
 
-domain="null"
 CONFIG_PATH=/etc/generate-csr/config
+domain="null"
+
+keyPath=$domain.key
+keyorgPath=$keyPath.org
+csrPath=$domain.csr
+zipPath=$domain.zip
+logPath=$domain.log
 
 for arg in "$@"; do
 	key=`echo "$arg" | awk -F "=" '{print $1}'`
@@ -19,12 +25,6 @@ if [ "$domain" = "null" ]; then
 	echo "Domain must be defined"
 	exit 1
 fi
-
-keyPath=$domain.key
-keyorgPath=$keyPath.org
-csrPath=$domain.csr
-zipPath=$domain.zip
-logPath=$domain.log
 
 if [ -f $CONFIG_PATH ]; then
 	# exists
