@@ -1,7 +1,8 @@
 #!/bin/bash
 cwd=$PWD
 
-CONFIG_PATH=/etc/generate-csr/config
+CONFIG_DIR=/etc/generate-csr
+CONFIG_FILENAME=config
 domain="null"
 certs_location="certs/"
 
@@ -10,13 +11,17 @@ for arg in "$@"; do
 	value=`echo "$arg" | awk -F "=" '{print $2}'`
 
 	if [[ $key == "--config_path" ]]; then
-		CONFIG_PATH=$value
+		CONFIG_DIR=`dirname $value`
+		CONFIG_FILENAME=`basename $value`
 	elif [[ $key == "--domain" ]]; then
 		domain=$value
 	elif [[ $key == "--certs_location" ]]; then
 		certs_location=$value
 	fi
 done
+
+# These variables depend on configurable parameters above
+CONFIG_PATH="$CONFIG_DIR/$CONFIG_FILENAME"
 
 if [ "$domain" = "null" ]; then
 	echo "Domain must be defined"
@@ -31,7 +36,7 @@ else
 	read -r -p "Configuration file not found at $CONFIG_PATH. Create? [y/N] " response
 	if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
 		echo -n "Making folder ."
-		sudo mkdir /etc/generate-csr 2> /dev/null
+		sudo mkdir -p "$CONFIG_DIR" 2> /dev/null
 		echo " Done"
 
 		echo -n "Enter ISO 3166 2 digit country code [ENTER]: "
