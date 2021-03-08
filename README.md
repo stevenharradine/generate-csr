@@ -7,6 +7,8 @@ Tool to generate a Certificate Signing Request (CSR).
  * openssl
  * 7za
 
+Note: If you're using macOS then instead of `7za` you'll need to `brew install p7zip`. You may need to `brew install wget` as well if it's not on your system.
+
 ## Usage
 Generate a CSR
 ```
