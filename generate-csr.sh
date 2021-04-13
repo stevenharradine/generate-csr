@@ -5,6 +5,7 @@ CONFIG_DIR=/etc/generate-csr
 CONFIG_FILENAME=config
 domain="null"
 certs_location="certs/"
+generate_secure_zip=false
 
 for arg in "$@"; do
 	key=`echo "$arg" | awk -F "=" '{print $1}'`
@@ -17,6 +18,8 @@ for arg in "$@"; do
 		domain=$value
 	elif [[ $key == "--certs_location" ]]; then
 		certs_location=$value
+	elif [[ $key == "--generate-secure-zip" ]]; then
+		generate_secure_zip=true
 	fi
 done
 
@@ -107,15 +110,19 @@ subject="/C=$country/ST=$state/L=$locality/O=$organisation/OU=$organisationalUni
 openssl req -new -key $keyPath -out $csrPath -subj "$subject" >> $logPath 2>&1
 echo " Done"
 
-echo -n "Generating encrypted zip"
-7za a -tzip -p"$password" -mem=AES256 $zipPath $keyPath >> $logPath 2>&1
-echo " Done"
+if [ "$generate_secure_zip" = true ]; then
+	echo -n "Generating encrypted zip"
+	7za a -tzip -p"$password" -mem=AES256 $zipPath $keyPath >> $logPath 2>&1
+	echo " Done"
+fi
 
 echo ""
 echo ""
 echo "CSR for $domain"
 cat "$csrPath"
-echo ""
-echo "Passphrase for zip: $password"
+if [ "$generate_secure_zip" = true ]; then
+	echo ""
+	echo "Passphrase for zip: $password"
+fi
 
 cd "$cwd"

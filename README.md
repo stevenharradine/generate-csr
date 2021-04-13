@@ -19,6 +19,7 @@ Generate a CSR
  * `--domain` (Required) is the FQDN to generate the CSR for
  * `--config_path` (Optional) the path to the configuration file (default: /etc/generate-csr/config)
  * `--certs_location` (Optional) Default: `certs/` the location where you want the certificates to be generated
+ * `--generate-secure-zip` (Optional) Flag, use to enable generation of an encypted password protected to zip
 
 ## Example
 1. Install
@@ -39,7 +40,6 @@ Writing configuration file . . . . . . Done
 Generating private key for example.com Done
 Removing passphrase from private key Done
 Generate certificate signing request (CSR) Done
-Generating encrypted zip Done
 
 
 CSR for example.com
@@ -60,12 +60,10 @@ XMDMC1Mpy+Rxzct3HLnVlW4BkWt+3+mpDxxFavl7izlZX2iKMgTI/6UuPiz/3Vkl
 z9/+RLI/p6zRlYKfV1G8YR6RRLEcoDr7xB1OgdJZ0I6IgmFc1JHoVvuzqLlw55Da
 x63fcvNmRYNHFmk6S2baiAtu4FVbvJZR/EEQN3cMPg==
 -----END CERTIFICATE REQUEST-----
-
-Passphrase for zip: aG3UrtpZmOV0LIPS67DZ8A==
 ```
 3. Subsequent runs will already have your ORG data saved
 ```
-$ generate-csr --domain=example.com
+$ generate-csr --domain=example.com --generate-secure-zip
 Generating private key for example.com Done
 Removing passphrase from private key Done
 Generate certificate signing request (CSR) Done
